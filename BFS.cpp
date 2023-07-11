@@ -1,37 +1,48 @@
 #include <iostream>
 #include <vector>
+#include <queue>
+
 using namespace std;
 
-void DFS(vector<vector<int>>& graph, vector<bool>& visited, int start)
-{
-    visited[start] = true;
-    cout << start << " "; 
+void BFS(vector<vector<int>>& graph, int start) {
+    int V = graph.size();
+    vector<bool> visited(V, false); 
+    queue<int> q; 
 
-    for (int i = 0; i < graph[start].size(); i++)
-    {
-        int next = graph[start][i];
-        if (!visited[next])
-        {
-            DFS(graph, visited, next); 
+    visited[start] = true; 
+    q.push(start); 
+
+    while (!q.empty()) {
+        int vertex = q.front(); 
+        q.pop();
+        cout << vertex << " "; 
+
+       
+        for (int i = 0; i < graph[vertex].size(); ++i) {
+            int adjacentVertex = graph[vertex][i];
+            if (!visited[adjacentVertex]) {
+                visited[adjacentVertex] = true; 
+                q.push(adjacentVertex); 
+            }
         }
     }
 }
 
-int main()
-{
-    int V = 5; 
-    vector<vector<int>> graph(V);
+int main() {
+    int V = 6; 
+    vector<vector<int>> graph(V); 
 
-    graph[0] = {1, 2};
-    graph[1] = {0, 2, 3, 4};
-    graph[2] = {0, 1};
-    graph[3] = {1};
-    graph[4] = {1};
+   
+    graph[0].push_back(1);
+    graph[0].push_back(2);
+    graph[1].push_back(3);
+    graph[2].push_back(3);
+    graph[2].push_back(4);
+    graph[3].push_back(4);
+    graph[3].push_back(5);
 
-    vector<bool> visited(V, false);
-
-    cout << "DFS traversal: ";
-    DFS(graph, visited, 0); 
+    cout << "Duyệt theo BFS (từ đỉnh 0): ";
+    BFS(graph, 0);
 
     return 0;
 }
